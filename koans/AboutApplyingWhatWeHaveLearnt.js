@@ -32,16 +32,22 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(productsICanEat.length).toBe(FILL_ME_IN);
+    expect(productsICanEat.length).toBe(1);
   });
 
   it("given I'm allergic to nuts and hate mushrooms, it should find a pizza I can eat (functional)", function () {
 
       var productsICanEat = [];
 
+      var noMushrooms = function(x) { return _(x.ingredients).all(function(y) { return y !== "mushrooms"})};
+      var pizzaWithoutNuts  = _(products).filter(function(row){return row.containsNuts === false;})
+      var pizzaWithoutMushroomsOrNuts  = _(pizzaWithoutNuts).filter(noMushrooms);
+     // productsICanEat = _(pizzaWithoutNuts).filter(function(row){return _(row.ingredients).any(function(x) { return x === "mushrooms" })
+      var len = pizzaWithoutNuts.length;
+      productsICanEat = pizzaWithoutMushroomsOrNuts;
       /* solve using filter() & all() / any() */
 
-      expect(productsICanEat.length).toBe(FILL_ME_IN);
+      expect(productsICanEat.length).toBe(1);
   });
 
   /*********************************************************************************/
@@ -55,14 +61,36 @@ describe("About Applying What We Have Learnt", function() {
       }
     }
 
-    expect(sum).toBe(FILL_ME_IN);
+    expect(sum).toBe(233168);
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
 
-    var sum = FILL_ME_IN;    /* try chaining range() and reduce() */
+      expect(_.range(3)).toEqual([0,1,2]);
+      expect(_.range(1, 4)).toEqual([1,2,3]);
+      expect(_.range(0, -4, -1)).toEqual([0,-1,-2,-3]);
 
-    expect(233168).toBe(FILL_ME_IN);
+            var result = _([ [0, 1], 2 ]).chain()
+                       .flatten()
+                       .map(function(x) { return x+1 } )
+                       .reduce(function (sum, x) { return sum + x })
+                       .value();
+
+    var sum = FILL_ME_IN;    /* try chaining range() and reduce() */
+    var array3 = (_.range(3, 1000, 3));
+    var array5 = (_.range(5, 1000, 5));
+    var array35 = array3;
+    _.each(array5, function(value, key, list) { if (!_.contains(array3, value)) { array35.push(value); }});
+
+    //var sum3 = (_.range(3, 1000, 3)).reduce(function (sum, x) { return sum + x });
+    //var sum5 = (_.range(5, 1000, 5)).reduce(function (sum, x) { return sum + x });
+    sum = array35.reduce(function (sum, x) { return sum + x });
+
+    //sum = _(_.range(3, 1000, 3)).chain()
+    //          _.each((_.range(5, 1000, 5)), function(value, key, list) { if (!(.contains(value))) { array35.push(value); }});
+    
+
+    expect(233168).toBe(sum);
   });
 
   /*********************************************************************************/
@@ -75,15 +103,21 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+    expect(ingredientCount['mushrooms']).toBe(2);
   });
 
   it("should count the ingredient occurrence (functional)", function () {
     var ingredientCount = { "{ingredient name}": 0 };
 
     /* chain() together map(), flatten() and reduce() */
+    var result = _(products).chain()
+                       .map(function(x) { return x.ingredients } )
+                       .flatten()
+                       .reduce(function (sum, x) { if(x === 'mushrooms') sum += 1; return sum }, 0)
+                       .value();
 
-    expect(ingredientCount['mushrooms']).toBe(FILL_ME_IN);
+
+    expect(result).toBe(2);
   });
 
   /*********************************************************************************/
